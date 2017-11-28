@@ -2,6 +2,14 @@ import pygame, thorpy
 import pygame.gfxdraw as gfx
 
 
+class Node:
+    def __init__(self, coord):
+        self.x = coord[0]
+        self.y = coord[1]
+
+    def coord(self):
+        return (self.x, self.y)
+
 def build_floor(n, gap):
     D = 2*R
     width = n*D + (n-1)*gap + 1
@@ -16,7 +24,6 @@ def build_floor(n, gap):
         centers.append(x)
         x += 2*R + gap
     return s, centers
-
 
 
 def get_gap(n,space,margin):
@@ -35,7 +42,9 @@ def draw(b,h):
     y = G + R
     centersx = []
     centersy = []
+    nodes = []
     for level in range(h):
+        nodes.append([])
         n = b**level
         gap = 100//n
         print("build floor", level, n, gap)
@@ -55,9 +64,13 @@ def draw(b,h):
                 p1 = centersx[level][i], centersy[level]
                 p2 = centersx[level-1][parent_i], centersy[level-1]
                 pygame.draw.aaline(screen, NODE_COLOR, p1, p2)
+                nodes[level].append(Node(p1))
+        else:
+            nodes[level].append(Node((centersx[level][0], centersy[level])))
     pygame.display.flip()
+    return nodes
 
-W, H = 1100, 400
+W, H = 1100, 300
 R = 8
 G = 50
 NODE_COLOR = (50,50,50)
@@ -66,7 +79,11 @@ BCK_COLOR = (255,255,255)
 ap = thorpy.Application((W,H), "Draw tree")
 screen = thorpy.get_screen()
 screen.fill(BCK_COLOR)
-draw(b=4,h=4)
-##pygame.draw.rect(screen, (0,0,0), pygame.Rect(W//2-1,H//2-1,2,2));pygame.display.flip()
+nodes = draw(b=4,h=4)
+pygame.image.save(screen, "b4.png")
 ap.pause()
-thorpy.quit()
+screen.fill((255,255,255))
+nodes = draw(b=2,h=4)
+pygame.image.save(screen, "b2.png")
+ap.pause()
+ap.quit()
