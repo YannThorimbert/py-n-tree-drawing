@@ -1,3 +1,6 @@
+"""(C) Yann Thorimbert
+Draw a tree with given branching factor and depth and save the image as png file.""" 
+from __future__ import print_function, division
 import pygame, thorpy
 import pygame.gfxdraw as gfx
 
