@@ -1,8 +1,8 @@
 """(C) Yann Thorimbert
 Draw a tree with given branching factor and depth and save the image as png file.""" 
 from __future__ import print_function, division
-import pygame, thorpy
 import pygame.gfxdraw as gfx
+import pygame
 
 
 class Node:
@@ -49,9 +49,9 @@ def draw(b,h):
     for level in range(h):
         nodes.append([])
         n = b**level
-        gap = 100//n
+        gap = 200//n
         print("build floor", level, n, gap)
-        s, c = build_floor(n,gap)
+        s, c = build_floor(n, gap)
         r = s.get_rect()
         r.centery = y
         r.centerx = W//2
@@ -73,20 +73,21 @@ def draw(b,h):
     pygame.display.flip()
     return nodes
 
+##############################################################################
 W, H = 1100, 300
 R = 8
 G = 50
 NODE_COLOR = (50,50,50)
 BCK_COLOR = (255,255,255)
 
-ap = thorpy.Application((W,H), "Draw tree")
-screen = thorpy.get_screen()
+screen = pygame.display.set_mode((W,H))
+
 screen.fill(BCK_COLOR)
 nodes = draw(b=4,h=4)
 pygame.image.save(screen, "b4.png")
-ap.pause()
-screen.fill((255,255,255))
-nodes = draw(b=2,h=4)
-pygame.image.save(screen, "b2.png")
-ap.pause()
-ap.quit()
+
+loop = True
+while loop:
+    for e in pygame.event.get():
+        if e.type == pygame.QUIT:
+            loop = False
