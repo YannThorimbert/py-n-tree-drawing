@@ -1,5 +1,5 @@
 """(C) Yann Thorimbert
-Draw a tree with given branching factor and depth and save the image as png file.""" 
+Draw a tree with given branching factor and depth and save the image as png file."""
 from __future__ import print_function, division
 import pygame.gfxdraw as gfx
 import pygame
@@ -51,10 +51,19 @@ def draw(b,h):
         nodes.append([])
         n = b**level
         if n > 1:
-            gap = get_gap(n, W, MARGIN_FACTOR//n)
+            # gap = get_gap(n, W, MARGIN_FACTOR//n)
             #m = int( W//2 * (1. - n/(nmax+0.)  ))
-            #print("***",n,m,n/(nmax+0.))
-            #gap = get_gap(n, W, m)
+            ###############################################
+            # m0 = 0
+            # gap_N = get_gap(nmax, W, m0)
+            # m = m0 + gap_N//2
+            # for i in range(h-1-level):
+            #     gap_N *= b
+            #     m += gap_N//2
+            # print(level, 10 + gap_N//2, m, h-1-level)
+            # gap = get_gap(n, W, m)
+            m = W//2 * (1. - level/(h-1)) / MARGIN_FACTOR
+            gap = get_gap(n, W, int(m))
         else:
             gap = 100
         #gap = 100//n
@@ -85,7 +94,7 @@ def draw(b,h):
 W, H = 1100, 300
 R = 8
 MARGIN_Y = 50
-MARGIN_FACTOR = 400 #a parameter of the display (play with it!)
+MARGIN_FACTOR = 1.5 #a parameter of the display (play with it!)
 NODE_COLOR = (50,50,50)
 BCK_COLOR = (255,255,255)
 
