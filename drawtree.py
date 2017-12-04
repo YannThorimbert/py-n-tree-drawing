@@ -40,16 +40,24 @@ def get_margin(n,space,delta):
 def draw(b,h):
     """b is the branching factor, h is the depth of the tree"""
     #here L is the space between the border of two circle in the depth
-    #g is the space betwwn the domain border and the border of the extreme circles
-    L = get_gap(h, H, G)
-    y = G + R
+    #g is the space between the domain border and the border of the extreme circles
+    L = get_gap(h, H, MARGIN_Y)
+    y = MARGIN_Y + R
     centersx = []
     centersy = []
     nodes = []
+    nmax = b**(h-1)
     for level in range(h):
         nodes.append([])
         n = b**level
-        gap = 200//n
+        if n > 1:
+            gap = get_gap(n, W, MARGIN_FACTOR//n)
+            #m = int( W//2 * (1. - n/(nmax+0.)  ))
+            #print("***",n,m,n/(nmax+0.))
+            #gap = get_gap(n, W, m)
+        else:
+            gap = 100
+        #gap = 100//n
         print("build floor", level, n, gap)
         s, c = build_floor(n, gap)
         r = s.get_rect()
@@ -76,7 +84,8 @@ def draw(b,h):
 ##############################################################################
 W, H = 1100, 300
 R = 8
-G = 50
+MARGIN_Y = 50
+MARGIN_FACTOR = 400 #a parameter of the display (play with it!)
 NODE_COLOR = (50,50,50)
 BCK_COLOR = (255,255,255)
 
